@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!./venv/bin/python
 
 import datetime
 import json
