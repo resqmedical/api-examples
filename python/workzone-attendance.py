@@ -26,51 +26,18 @@ def GetActiveResidentList(InstId, ApiKey):
         'inst_id': InstId
     }
 
-    request = {
-        'credentials': credentials
+    user_request = {
+        'credentials': credentials,
+        'active_only': True,
+        'type': 'Resident'
     }
 
     response = requests.post(
-        url + '/programs/',
-        json=json.dumps(request))
+        url + '/users/',
+        json=json.dumps(user_request))
 
     if response.status_code == 200:
-        programs = response.json()
-        for program in programs:
-            prog_id = program['id']
-            program_name = program['name']
-
-            request['prog_id'] = prog_id
-
-            response2 = requests.post(
-                url + '/programs/',
-                json=json.dumps(request))
-
-            if response2.status_code == 200:
-                program_detail = response2.json()[0]
-                user_ids = program_detail['users']
-
-                for user_id in user_ids:
-                    user_request = {
-                        'credentials': credentials,
-                        'user_id': user_id
-                    }
-
-                    response3 = requests.post(
-                        url + '/users/',
-                        json=json.dumps(user_request))
-
-                    if response3.status_code == 200:
-                        user = response3.json()[0]
-                        if user['is_active'] is True and user['type'] == 'Resident':
-                            active_users.append({
-                                'id': user['id'],
-                                'last_name': user['last_name'],
-                                'first_name': user['first_name'],
-                                'email': user['email'],
-                                'pgy': user['pgy'],
-                                'program': program_name
-                            })
+        active_users = response.json()
 
     return active_users
 
@@ -112,8 +79,8 @@ if __name__ == '__main__':
 
     Now = datetime.datetime.now()
 
-    month_count = 0
-    while month_count < int(args.NumMonths):
+    month_count = 1
+    while month_count < int(args.NumMonths)+1:
 
         DatePoint = Now - relativedelta(months=month_count)
 
@@ -141,8 +108,8 @@ if __name__ == '__main__':
             col += 1
             CurrentDate = CurrentDate + relativedelta(days=1)
 
-        request['date_range']['start_date'] = StartDate.isoformat()
-        request['date_range']['end_date'] = EndDate.isoformat()
+        request['date_range']['start_date'] = StartDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        request['date_range']['end_date'] = EndDate.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
         for resident in ResidentList:
             row = row + 1
@@ -215,5 +182,6 @@ if __name__ == '__main__':
                     CurrentDate = CurrentDate + relativedelta(days=1)
 
         month_count += 1
+        print('Month {}'.format(month_count))
 
     workbook.close()
