@@ -1,5 +1,3 @@
-#!./venv/bin/python
-
 import datetime
 import json
 import requests
