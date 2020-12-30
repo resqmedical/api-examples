@@ -6,32 +6,58 @@ from dateutil.relativedelta import relativedelta
 
 if __name__ == '__main__':
 
+    API_KEY = 'FIXME'
+    INST_ID = 0
+    PROG_ID = 0
+
     credentials = {
-        'api_key': 'FIXME',
-        'inst_id': 'FIXME'
+        'api_key': API_KEY,
+        'inst_id': INST_ID
     }
 
-    # Program analytics for the last month.
-    Now = datetime.datetime.now()
-    StartDate = Now + relativedelta(day=1, months=-1)
-    EndDate = Now + relativedelta(day=1, months=+1, days=-1)
     request = {
         'credentials': credentials,
-        'user_id': 9772,
+        'prog_id': PROG_ID,
         'date_range': {
-            'start_date': '2020-08-02T17:17:54.679Z',
-            'end_date': '2020-09-01T17:17:54.679Z'
+            'start_date': '2020-09-01T21:12:21.709Z',
+            'end_date': '2020-09-06T00:00:00.000Z'
         }
     }
 
     url = 'https://api.resqmedical.com'
 
+    # Program WorkTime Stats
     response = requests.post(
-        url + '/worktime',
-        json=json.dumps(request))
+        url + '/analytics/program/stats',
+        json=json.dumps(request),
+        verify=False)
+    if response.status_code != 200:
+        print(response.status_code)
+        print(response.json()['message'])
+    else:
+        print('WorkTime Stats')
+        print(response.json())
 
-    print(response)
+    # Program Active Users
+    response = requests.post(
+        url + '/analytics/program/active_users',
+        json=json.dumps(request),
+        verify=False)
+    if response.status_code != 200:
+        print(response.status_code)
+        print(response.json()['message'])
+    else:
+        print('Active Users')
+        print(response.json())
 
-    if response.status_code == 200:
-        analytics = response.json()
-        print(analytics)
+    # Program WorkForce History
+    response = requests.post(
+        url + '/analytics/program/workforce_history',
+        json=json.dumps(request),
+        verify=False)
+    if response.status_code != 200:
+        print(response.status_code)
+        print(response.json()['message'])
+    else:
+        print('Active Users')
+        print(response.json())
