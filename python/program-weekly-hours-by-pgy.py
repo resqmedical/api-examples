@@ -3,6 +3,9 @@ import json
 import requests
 import xlsxwriter
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 from dateutil.relativedelta import relativedelta
 
 if __name__ == '__main__':
@@ -31,6 +34,7 @@ if __name__ == '__main__':
     worksheet = workbook.add_worksheet(PROG)
     header_written = False
 
+    row = 1        
     for pgy in range(1, 6):
         response = requests.post(
             url + '/users',
@@ -47,7 +51,6 @@ if __name__ == '__main__':
             print(response.json()['message'])
         else:
             users = response.json()
-            row = 1
             for user in users:
                 worksheet.write(row, 0, user['last_name'])
                 worksheet.write(row, 1, user['first_name'])
@@ -59,7 +62,8 @@ if __name__ == '__main__':
                         'credentials': credentials,
                         'user_id': user['id'],
                         'date_range': date_range
-                    }))
+                    }),
+                    verify=False)
 
                 if response.status_code == 200:
                     weeks = response.json()['weeks']
