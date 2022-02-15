@@ -7,8 +7,8 @@ from dateutil.relativedelta import relativedelta
 if __name__ == '__main__':
 
     credentials = {
-        'api_key': 'FIXME',
-        'inst_id': 'FIXME'
+        'api_key': 'fixme',
+        'inst_id': 'fixme'
     }
 
     request = {
@@ -17,8 +17,7 @@ if __name__ == '__main__':
 
     response = requests.post(
         'https://api.resqmedical.com/users/',
-        json=json.dumps(request),
-        verify=False)
+        json=json.dumps(request))
 
     if response.status_code != 200:
         print(response.status_code)
