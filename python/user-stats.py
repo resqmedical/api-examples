@@ -7,8 +7,8 @@ from dateutil.relativedelta import relativedelta
 if __name__ == '__main__':
 
     credentials = {
-        'api_key': 'FIXME',
-        'inst_id': 'FIXME'
+        'api_key': 'fixme',
+        'inst_id': 'fixme'
     }
 
     request = {
@@ -29,6 +29,7 @@ if __name__ == '__main__':
         type_counts['residents'] = 0
         type_counts['attendings'] = 0
         type_counts['nurses'] = 0
+        type_counts['student'] = 0
         type_counts['program admins'] = 0
         type_counts['gme admins'] = 0
 
@@ -42,6 +43,8 @@ if __name__ == '__main__':
                 type_counts['attendings'] += 1
             if user['type'] == 'Nurse':
                 type_counts['nurses'] += 1
+            if user['type'] == 'Student':
+                type_counts['student'] += 1
             if user['type'] == 'Program Admin':
                 type_counts['program admins'] += 1
             if user['type'] == 'Institute Admin':
