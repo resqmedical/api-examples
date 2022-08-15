@@ -6,8 +6,8 @@ from dateutil.relativedelta import relativedelta
 
 if __name__ == '__main__':
 
-    API_KEY = 'XYZ123'
-    INST_ID = 'beta'
+    API_KEY = 'fixme'
+    INST_ID = 'fixme'
     USER_ID = 9800
 
     credentials = {
